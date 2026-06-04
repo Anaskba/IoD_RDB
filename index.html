@@ -131,8 +131,12 @@ function qCardHTML(qs,idx,study){
   q.options.forEach(function(opt,i){
     let cls='opt';let ic='';
     if(done){
-      if(i===q.answer){cls+=' cor';ic='<span class="opt-i">✓</span>';}
-      else if(i===a&&a!==q.answer){cls+=' wrg';ic='<span class="opt-i">✗</span>';}
+      if(study){
+        if(i===q.answer){cls+=' cor';ic='<span class="opt-i">✓</span>';}
+        else if(i===a&&a!==q.answer){cls+=' wrg';ic='<span class="opt-i">✗</span>';}
+      }else{
+        if(i===a)cls+=' sel';
+      }
       cls+=' dis';
     }else{if(i===a)cls+=' sel';}
     h+='<div class="'+cls+'" onclick="selOpt('+idx+','+i+')"><span class="opt-l">'+L[i]+'.</span><span class="opt-t">'+opt+'</span>'+ic+'</div>';
