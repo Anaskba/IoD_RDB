@@ -231,8 +231,13 @@ function clearStudyProgress(){
   cloudClear();
 }
 
-function startStudy(){
+async function startStudy(){
   ST.mode='study';ST.sqs=BANK;
+  // If signed in but cloud data not yet loaded, fetch it now
+  if(currentEmail&&!ST.cloudProg){
+    scr().innerHTML='<div style="text-align:center;padding:40px;color:#888;font-size:.9rem;">Loading your progress…</div>';
+    try{const d=await cloudLoad();if(d&&Object.keys(d.ans||{}).length>0)ST.cloudProg=d;}catch(e){}
+  }
   const saved=loadStudyProgress();
   if(saved&&Object.keys(saved.ans||{}).length>0){
     ST.cur=saved.cur||0;ST.ans=saved.ans||{};
