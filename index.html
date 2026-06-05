@@ -324,12 +324,13 @@ function renderResults(qs,sc,mx){
 
 function goHome(){clearInterval(ST.timer);if(ST.mode==='study')saveStudyProgress();ST.mode='home';renderHome();}
 
-// Start app — fetch cloud progress first if email is saved, then render home
-scr().innerHTML='<div style="text-align:center;padding:40px;color:#888;font-size:.9rem;">Loading…</div>';
-(async function(){
-  if(currentEmail){try{const d=await cloudLoad();if(d&&Object.keys(d.ans||{}).length>0)ST.cloudProg=d;}catch(e){}}
-  ST.mode='home';renderHome();
-})();
+// Start app immediately, then refresh home if cloud data loads
+ST.mode='home';renderHome();
+if(currentEmail){
+  cloudLoad().then(function(d){
+    if(d&&Object.keys(d.ans||{}).length>0){ST.cloudProg=d;if(ST.mode==='home')renderHome();}
+  }).catch(function(){});
+}
 </script>
 </body>
 </html>
