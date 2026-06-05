@@ -219,6 +219,7 @@ function saveStudyProgress(){
   cloudSave(data);
 }
 function loadStudyProgress(){
+  if(!currentEmail)return null;
   const cloud=ST.cloudProg;
   if(cloud&&Object.keys(cloud.ans||{}).length>0)return cloud;
   if(lsAvail())try{const d=JSON.parse(localStorage.getItem('iod_study_prog')||'null');return d;}catch(e){}
